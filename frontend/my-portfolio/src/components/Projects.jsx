@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useFetch } from '../hooks/useFetch'
+import { getMediaUrl } from '../utils/media'
 
 const DEFAULT_PROJECTS = [
   {
@@ -41,7 +42,7 @@ const DEFAULT_PROJECTS = [
 ]
 
 export default function Projects() {
-  const { data: rawProjects, loading } = useFetch('/public/projects')
+  const { data: rawProjects } = useFetch('/public/projects')
   const projects = Array.isArray(rawProjects) && rawProjects.length > 0 ? rawProjects : DEFAULT_PROJECTS
   const [activeHeroIndex, setActiveHeroIndex] = useState(0)
   const [showAllModal, setShowAllModal] = useState(false)
@@ -59,28 +60,23 @@ export default function Projects() {
       },
       { threshold: 0.1 }
     )
+
     if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
 
-  if (loading) return (
-    <section className="section" id="projects" ref={sectionRef}>
-      <div className="container">
-        <div className="loading-center"><div className="spinner" /></div>
-      </div>
-    </section>
-  )
+  const handleNextHero = (e) => {
+    e.stopPropagation()
+    setActiveHeroIndex((prev) => (prev + 1) % projects.length)
+  }
+
+  const handlePrevHero = (e) => {
+    e.stopPropagation()
+    setActiveHeroIndex((prev) => (prev - 1 + projects.length) % projects.length)
+  }
 
   const heroProject = projects[activeHeroIndex] || projects[0]
   const secondaryProjects = projects.filter((_, idx) => idx !== activeHeroIndex)
-
-  const handlePrevHero = () => {
-    setActiveHeroIndex(prev => (prev === 0 ? projects.length - 1 : prev - 1))
-  }
-
-  const handleNextHero = () => {
-    setActiveHeroIndex(prev => (prev === projects.length - 1 ? 0 : prev + 1))
-  }
 
   return (
     <>
@@ -88,16 +84,18 @@ export default function Projects() {
         <div className="container">
           <div className="section-eyebrow">projects</div>
           <h2 className="section-title">Projects</h2>
-          <p className="section-sub">Showcase of technical solutions and architectural builds.</p>
+          <p className="section-sub">
+            Showcase of my featured projects and key technical work.
+          </p>
 
-          {/* Wireframe 2 Grid Structure with 95% Image Fill & Blur Hover */}
+          {/* Wireframe 2 Layout: Left Hero Card + Right Top Stacked Cards + Bottom Row Cards */}
           <div className="projects-wireframe-grid">
-            {/* Featured Hero Card (Left) */}
+            {/* Left Hero Card */}
             {heroProject && (
               <div className="projects-hero-card card" onClick={() => setSelectedProject(heroProject)}>
                 <div className="project-95-img-container">
                   {heroProject.thumbnail_url ? (
-                    <img src={heroProject.thumbnail_url} alt={heroProject.title} className="project-95-img" />
+                    <img src={getMediaUrl(heroProject.thumbnail_url)} alt={heroProject.title} className="project-95-img" />
                   ) : (
                     <div className="wireframe-cross-placeholder">
                       <div className="cross-line-1" />
@@ -141,7 +139,7 @@ export default function Projects() {
                   >
                     <div className="project-95-img-container">
                       {p.thumbnail_url ? (
-                        <img src={p.thumbnail_url} alt={p.title} className="project-95-img" />
+                        <img src={getMediaUrl(p.thumbnail_url)} alt={p.title} className="project-95-img" />
                       ) : (
                         <div className="wireframe-cross-placeholder">
                           <div className="cross-line-1" />
@@ -165,7 +163,7 @@ export default function Projects() {
               <div key={p.id} className="project-bottom-card card" onClick={() => setSelectedProject(p)}>
                 <div className="project-95-img-container">
                   {p.thumbnail_url ? (
-                    <img src={p.thumbnail_url} alt={p.title} className="project-95-img" />
+                    <img src={getMediaUrl(p.thumbnail_url)} alt={p.title} className="project-95-img" />
                   ) : (
                     <div className="wireframe-cross-placeholder">
                       <div className="cross-line-1" />
@@ -208,7 +206,7 @@ export default function Projects() {
                 <div className="wireframe-project-detail-card">
                   <div className="detail-img-col">
                     {selectedProject.thumbnail_url ? (
-                      <img src={selectedProject.thumbnail_url} alt={selectedProject.title} />
+                      <img src={getMediaUrl(selectedProject.thumbnail_url)} alt={selectedProject.title} />
                     ) : (
                       <div className="wireframe-cross-placeholder modal-placeholder">
                         <div className="cross-line-1" />
@@ -257,7 +255,7 @@ export default function Projects() {
                     <div key={p.id || idx} className="wireframe-project-detail-card">
                       <div className="detail-img-col">
                         {p.thumbnail_url ? (
-                          <img src={p.thumbnail_url} alt={p.title} />
+                          <img src={getMediaUrl(p.thumbnail_url)} alt={p.title} />
                         ) : (
                           <div className="wireframe-cross-placeholder modal-placeholder">
                             <div className="cross-line-1" />

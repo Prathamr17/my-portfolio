@@ -1,4 +1,5 @@
 import { useFetch } from '../hooks/useFetch'
+import { getMediaUrl } from '../utils/media'
 
 const PLACEHOLDER = {
   name: 'Pratham Raikar',
@@ -14,6 +15,7 @@ export default function About() {
   const { data: about, loading } = useFetch('/public/about')
   const info = about || PLACEHOLDER
   const skillsList = info.skills || DEFAULT_SKILLS
+  const photoUrl = getMediaUrl(info.profile_photo_url)
 
   if (loading) return (
     <section className="section" id="about">
@@ -36,8 +38,8 @@ export default function About() {
           <div className="about-col-left">
             <div className="about-photo-wrap compact-photo">
               <div className="about-photo-frame" />
-              {info.profile_photo_url ? (
-                <img src={info.profile_photo_url} alt={info.name} className="about-photo" />
+              {photoUrl ? (
+                <img src={photoUrl} alt={info.name} className="about-photo" onError={(e) => { e.target.style.display = 'none' }} />
               ) : (
                 <div className="about-photo" style={{
                   background: 'var(--bg-card)',
