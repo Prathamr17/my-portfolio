@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
@@ -30,8 +30,17 @@ def create_app(config_name: str = "default") -> Flask:
     jwt.init_app(app)
     mail.init_app(app)
     
-    # Enable CORS for all origins and headers
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    # Enable CORS globally across all routes
+    CORS(app, resources={r"/*": {"origins": "*"}})
+
+    @app.before_request
+    def handle_options_preflight():
+        if request.method == "OPTIONS":
+            response = make_response()
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+            response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+            return response
 
     @app.after_request
     def after_request(response):
