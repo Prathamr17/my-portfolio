@@ -30,13 +30,15 @@ def create_app(config_name: str = "default") -> Flask:
     jwt.init_app(app)
     mail.init_app(app)
     
-    # Enable CORS for Vercel and local development
-    origins_cfg = app.config.get("FRONTEND_URL", "*")
-    if not origins_cfg or origins_cfg == "*":
-        CORS(app, resources={r"/api/*": {"origins": "*"}})
-    else:
-        allowed = [o.strip() for o in origins_cfg.split(",")]
-        CORS(app, resources={r"/api/*": {"origins": allowed + ["http://localhost:5173", "http://localhost:3000"]}})
+    # Enable CORS for all origins and headers
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+    @app.after_request
+    def after_request(response):
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        return response
 
     # ── Import models so Migrate/Alembic can see them ─────────────────────────
     from app.models import (  # noqa: F401
