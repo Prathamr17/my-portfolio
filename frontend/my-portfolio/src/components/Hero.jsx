@@ -39,7 +39,8 @@ export default function Hero() {
           <div className="hero-kicker"><span className="dot" />available for opportunities</div>
 
           <h1 className="hero-name">
-            Hi, I'm <span className="accent">{about?.name || 'Pratham Raikar'}</span>
+            Hi, I'm <br />
+            <span className="accent">{about?.name || 'Pratham Raikar'}</span>
           </h1>
 
           <div className="hero-role-row">

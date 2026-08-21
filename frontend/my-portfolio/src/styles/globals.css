@@ -484,7 +484,7 @@ input, textarea, select { font-family: inherit; }
 .hero-inner {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 56px;
+  gap: 130px;
   align-items: center;
   position: relative;
   z-index: 1;
@@ -2174,7 +2174,7 @@ tr:hover td { background: rgba(99,102,241,0.03); }
 .hero-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: 130px;
   align-items: center;
   position: relative;
   z-index: 2;
