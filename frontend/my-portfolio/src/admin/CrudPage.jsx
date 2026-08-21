@@ -2,6 +2,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import api from '../api/axios'
 import { Plus, X } from 'lucide-react'
+import ImageUploadInput from './ImageUploadInput'
 
 /**
  * Generic CRUD page.
@@ -147,34 +148,46 @@ export default function CrudPage({
             </div>
             <div className="modal-body">
               {fields.map(fi => (
-                <div key={fi.name} className="input-group">
-                  <label>{fi.label}{fi.required ? ' *' : ''}</label>
-                  {fi.type === 'textarea' ? (
-                    <textarea name={fi.name} value={form[fi.name] || ''} onChange={handleChange} placeholder={fi.placeholder || ''} />
-                  ) : fi.type === 'select' ? (
-                    <select name={fi.name} value={form[fi.name] || ''} onChange={handleChange}>
-                      <option value="">Select...</option>
-                      {fi.options?.map(o => (
-                        <option key={o.value} value={o.value}>{o.label}</option>
-                      ))}
-                    </select>
-                  ) : fi.type === 'checkbox' ? (
-                    <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', flexDirection: 'row' }}>
-                      <input type="checkbox" name={fi.name} checked={!!form[fi.name]} onChange={handleChange} style={{ width: 'auto' }} />
-                      <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{fi.checkLabel || 'Yes'}</span>
-                    </label>
-                  ) : (
-                    <input
-                      type={fi.type || 'text'}
-                      name={fi.name}
-                      value={form[fi.name] || ''}
-                      onChange={handleChange}
-                      placeholder={fi.placeholder || ''}
-                      required={fi.required}
-                    />
-                  )}
-                  {fi.hint && <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: 2 }}>{fi.hint}</span>}
-                </div>
+                fi.type === 'image' || fi.type === 'file' ? (
+                  <ImageUploadInput
+                    key={fi.name}
+                    name={fi.name}
+                    value={form[fi.name] || ''}
+                    onChange={handleChange}
+                    label={fi.label + (fi.required ? ' *' : '')}
+                    hint={fi.hint}
+                    accept={fi.accept || (fi.type === 'file' ? 'image/*,.pdf' : 'image/*')}
+                  />
+                ) : (
+                  <div key={fi.name} className="input-group">
+                    <label>{fi.label}{fi.required ? ' *' : ''}</label>
+                    {fi.type === 'textarea' ? (
+                      <textarea name={fi.name} value={form[fi.name] || ''} onChange={handleChange} placeholder={fi.placeholder || ''} />
+                    ) : fi.type === 'select' ? (
+                      <select name={fi.name} value={form[fi.name] || ''} onChange={handleChange}>
+                        <option value="">Select...</option>
+                        {fi.options?.map(o => (
+                          <option key={o.value} value={o.value}>{o.label}</option>
+                        ))}
+                      </select>
+                    ) : fi.type === 'checkbox' ? (
+                      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', flexDirection: 'row' }}>
+                        <input type="checkbox" name={fi.name} checked={!!form[fi.name]} onChange={handleChange} style={{ width: 'auto' }} />
+                        <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{fi.checkLabel || 'Yes'}</span>
+                      </label>
+                    ) : (
+                      <input
+                        type={fi.type || 'text'}
+                        name={fi.name}
+                        value={form[fi.name] || ''}
+                        onChange={handleChange}
+                        placeholder={fi.placeholder || ''}
+                        required={fi.required}
+                      />
+                    )}
+                    {fi.hint && <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: 2 }}>{fi.hint}</span>}
+                  </div>
+                )
               ))}
             </div>
             <div className="modal-footer">

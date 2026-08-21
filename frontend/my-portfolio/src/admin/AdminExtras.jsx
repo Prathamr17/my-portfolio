@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import api from '../api/axios'
 import { useFetch } from '../hooks/useFetch'
 import { Trash2, CheckCheck } from 'lucide-react'
+import ImageUploadInput from './ImageUploadInput'
 
 // ── About Me Editor ───────────────────────────────────────────────────────────
 export function ManageAbout() {
@@ -36,8 +37,8 @@ export function ManageAbout() {
     { name:'specialization', label:'Specialization',  type:'text' },
     { name:'github_url',     label:'GitHub URL',      type:'url' },
     { name:'linkedin_url',   label:'LinkedIn URL',    type:'url' },
-    { name:'resume_url',     label:'Resume URL',      type:'text' },
-    { name:'profile_photo_url', label:'Profile Photo URL', type:'text' },
+    { name:'profile_photo_url', label:'Profile Photo', type:'image', hint:'Upload profile photo directly to Cloudinary' },
+    { name:'resume_url',     label:'Resume PDF/Document', type:'file', accept:'image/*,.pdf', hint:'Upload resume document directly to Cloudinary' },
   ]
 
   return (
@@ -63,14 +64,26 @@ export function ManageAbout() {
             gap: 20,
           }}>
             {FIELDS.map(f => (
-              <div key={f.name} className="input-group" style={ f.type === 'textarea' ? { gridColumn: '1 / -1' } : {} }>
-                <label>{f.label}</label>
-                {f.type === 'textarea' ? (
-                  <textarea name={f.name} value={form[f.name] || ''} onChange={handleChange} rows={5} />
-                ) : (
-                  <input type={f.type} name={f.name} value={form[f.name] || ''} onChange={handleChange} />
-                )}
-              </div>
+              f.type === 'image' || f.type === 'file' ? (
+                <ImageUploadInput
+                  key={f.name}
+                  name={f.name}
+                  value={form[f.name] || ''}
+                  onChange={handleChange}
+                  label={f.label}
+                  hint={f.hint}
+                  accept={f.accept || 'image/*'}
+                />
+              ) : (
+                <div key={f.name} className="input-group" style={ f.type === 'textarea' ? { gridColumn: '1 / -1' } : {} }>
+                  <label>{f.label}</label>
+                  {f.type === 'textarea' ? (
+                    <textarea name={f.name} value={form[f.name] || ''} onChange={handleChange} rows={5} />
+                  ) : (
+                    <input type={f.type} name={f.name} value={form[f.name] || ''} onChange={handleChange} />
+                  )}
+                </div>
+              )
             ))}
           </div>
         )}

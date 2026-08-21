@@ -22,7 +22,7 @@ export function ManageProjects() {
         { name: 'tech_tags',     label: 'Tech Tags',         type: 'tags',    placeholder: 'Python, Flask, MySQL', hint: 'Comma-separated values' },
         { name: 'github_url',    label: 'GitHub URL',        placeholder: 'https://github.com/...' },
         { name: 'live_url',      label: 'Live URL',          placeholder: 'https://...' },
-        { name: 'thumbnail_url', label: 'Thumbnail URL',     placeholder: '/uploads/image.png' },
+        { name: 'thumbnail_url', label: 'Thumbnail Image',   type: 'image', placeholder: '/uploads/image.png', hint: 'Click Choose Image File to upload directly to Cloudinary' },
         { name: 'is_featured',   label: 'Featured',          type: 'checkbox', checkLabel: 'Show as featured project' },
         { name: 'order_index',   label: 'Order',             type: 'number',  placeholder: '0' },
       ]}
@@ -55,7 +55,7 @@ export function ManageCertificates() {
           {value:'internship',label:'Internship'},{value:'training',label:'Training'},
           {value:'workshop',label:'Workshop'},{value:'other',label:'Other'},
         ]},
-        { name: 'image_url',      label: 'Image URL',      placeholder: '/uploads/certs/cert.png', hint: 'Upload via admin upload, then paste path here' },
+        { name: 'image_url',      label: 'Certificate Image', type: 'image', placeholder: '/uploads/certs/cert.png', hint: 'Click Choose Image File to upload directly to Cloudinary' },
         { name: 'credential_url', label: 'Credential URL', placeholder: 'https://...' },
       ]}
       emptyForm={{ title:'', issuer:'', issue_date:'', category:'other', image_url:'', credential_url:'' }}
@@ -118,7 +118,7 @@ export function ManagePlatforms() {
       fields={[
         { name: 'name',            label: 'Platform Name',  required: true, placeholder: 'LeetCode' },
         { name: 'description',     label: 'Description',    type:'textarea', placeholder: 'Platform description' },
-        { name: 'logo_url',        label: 'Logo URL',       placeholder: '/uploads/leetcode.png' },
+        { name: 'logo_url',        label: 'Platform Logo',  type: 'image', placeholder: '/uploads/leetcode.png', hint: 'Click Choose Image File to upload directly to Cloudinary' },
         { name: 'profile_url',     label: 'Profile URL',    placeholder: 'https://leetcode.com/u/...' },
         { name: 'problems_solved', label: 'Problems Solved',placeholder: '130+' },
         { name: 'current_rating',  label: 'Current Rating', placeholder: '1540 or ---' },
