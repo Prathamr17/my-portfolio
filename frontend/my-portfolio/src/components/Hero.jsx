@@ -53,23 +53,27 @@ export default function Hero() {
           </p>
 
           <div className="hero-btns">
-            <a
-              href={getMediaUrl(about?.resume_url) || '#'}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              type="button"
+              onClick={() => {
+                const url = getMediaUrl(about?.resume_url)
+                if (url) window.open(url, '_blank', 'noopener,noreferrer')
+              }}
               className="btn-primary"
             >
               <span><i className="fa-solid fa-file-arrow-down" style={{ marginRight: 8 }} />Resume</span>
-            </a>
+            </button>
 
-            <a
-              href={about?.github_url || 'https://github.com/Prathamr17'}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              type="button"
+              onClick={() => {
+                const url = about?.github_url || 'https://github.com/Prathamr17'
+                window.open(url, '_blank', 'noopener,noreferrer')
+              }}
               className="btn-outline"
             >
-              <i className="fab fa-github" /> GitHub
-            </a>
+              <i className="fab fa-github" style={{ marginRight: 8 }} /> GitHub
+            </button>
           </div>
         </div>
 

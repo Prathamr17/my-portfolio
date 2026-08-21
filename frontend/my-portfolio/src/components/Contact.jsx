@@ -40,13 +40,20 @@ export default function Contact() {
         <div className="contact-wireframe-grid">
           {/* Left Column: 4 Stacked Info Cards */}
           <div className="contact-info-cards-col">
-            <a href={about?.email ? `mailto:${about.email}` : '#'} className="contact-info-card card">
+            <button
+              type="button"
+              onClick={() => {
+                if (about?.email) window.location.href = `mailto:${about.email}`
+              }}
+              className="contact-info-card card"
+              style={{ textLeft: 'left', width: '100%', cursor: 'pointer' }}
+            >
               <div className="contact-card-icon"><i className="fa-solid fa-envelope" /></div>
               <div className="contact-card-text">
                 <span className="contact-card-label">EMAIL</span>
                 <span className="contact-card-value">{about?.email || 'pratham@example.com'}</span>
               </div>
-            </a>
+            </button>
 
             <div className="contact-info-card card">
               <div className="contact-card-icon"><i className="fa-solid fa-phone" /></div>
@@ -56,21 +63,37 @@ export default function Contact() {
               </div>
             </div>
 
-            <a href={about?.linkedin_url || 'https://linkedin.com'} target="_blank" rel="noreferrer" className="contact-info-card card">
+            <button
+              type="button"
+              onClick={() => {
+                const url = about?.linkedin_url || 'https://linkedin.com'
+                window.open(url, '_blank', 'noopener,noreferrer')
+              }}
+              className="contact-info-card card"
+              style={{ textLeft: 'left', width: '100%', cursor: 'pointer' }}
+            >
               <div className="contact-card-icon"><i className="fab fa-linkedin-in" /></div>
               <div className="contact-card-text">
                 <span className="contact-card-label">LINKEDIN</span>
                 <span className="contact-card-value">linkedin.com/in/pratham</span>
               </div>
-            </a>
+            </button>
 
-            <a href={about?.github_url || 'https://github.com'} target="_blank" rel="noreferrer" className="contact-info-card card">
+            <button
+              type="button"
+              onClick={() => {
+                const url = about?.github_url || 'https://github.com/Prathamr17'
+                window.open(url, '_blank', 'noopener,noreferrer')
+              }}
+              className="contact-info-card card"
+              style={{ textLeft: 'left', width: '100%', cursor: 'pointer' }}
+            >
               <div className="contact-card-icon"><i className="fab fa-github" /></div>
               <div className="contact-card-text">
                 <span className="contact-card-label">GITHUB</span>
                 <span className="contact-card-value">github.com/Prathamr17</span>
               </div>
-            </a>
+            </button>
           </div>
 
           {/* Right Column: Contact Form Box */}

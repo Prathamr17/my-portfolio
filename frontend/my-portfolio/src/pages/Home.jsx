@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import FloatingNavbar from '../components/FloatingNavbar'
 import Hero from '../components/Hero'
@@ -7,19 +8,34 @@ import Projects from '../components/Projects'
 import Skills from '../components/Skills'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
+import { useScrollReveal } from '../hooks/useScrollReveal'
 
 export default function Home() {
+  const [navVisible, setNavVisible] = useState(() => {
+    return localStorage.getItem('nav_visible') !== 'false'
+  })
+
+  useScrollReveal('.reveal-on-scroll, .section')
+
+  const toggleNav = () => {
+    setNavVisible(prev => {
+      const next = !prev
+      localStorage.setItem('nav_visible', String(next))
+      return next
+    })
+  }
+
   return (
     <>
-      <Navbar />
-      <Hero />
-      <About />
-      <Internship />
-      <Projects />
-      <Skills />
-      <Contact />
+      <Navbar navVisible={navVisible} />
+      <div className="reveal-on-scroll"><Hero /></div>
+      <div className="reveal-on-scroll"><About /></div>
+      <div className="reveal-on-scroll"><Internship /></div>
+      <div className="reveal-on-scroll"><Projects /></div>
+      <div className="reveal-on-scroll"><Skills /></div>
+      <div className="reveal-on-scroll"><Contact /></div>
       <Footer />
-      <FloatingNavbar />
+      <FloatingNavbar navVisible={navVisible} onToggleNav={toggleNav} />
     </>
   )
 }

@@ -17,9 +17,21 @@ export default function Footer() {
           </div>
 
           <div className="footer-socials">
-            {about?.github_url && (<a href={about.github_url} target="_blank" rel="noreferrer"><i className="fab fa-github" /></a>)}
-            {about?.linkedin_url && (<a href={about.linkedin_url} target="_blank" rel="noreferrer"><i className="fab fa-linkedin-in" /></a>)}
-            {about?.email && (<a href={`mailto:${about.email}`}><i className="fa-solid fa-envelope" /></a>)}
+            {about?.github_url && (
+              <button type="button" onClick={() => window.open(about.github_url, '_blank', 'noopener,noreferrer')} className="footer-social-btn" aria-label="GitHub">
+                <i className="fab fa-github" />
+              </button>
+            )}
+            {about?.linkedin_url && (
+              <button type="button" onClick={() => window.open(about.linkedin_url, '_blank', 'noopener,noreferrer')} className="footer-social-btn" aria-label="LinkedIn">
+                <i className="fab fa-linkedin-in" />
+              </button>
+            )}
+            {about?.email && (
+              <button type="button" onClick={() => { window.location.href = `mailto:${about.email}` }} className="footer-social-btn" aria-label="Email">
+                <i className="fa-solid fa-envelope" />
+              </button>
+            )}
           </div>
         </div>
       </div>

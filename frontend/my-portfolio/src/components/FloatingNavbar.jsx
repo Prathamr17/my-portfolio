@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function FloatingNavbar() {
+export default function FloatingNavbar({ navVisible = true, onToggleNav }) {
   const [activeSection, setActiveSection] = useState('home')
 
   const navItems = [
@@ -114,25 +114,72 @@ export default function FloatingNavbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const scrollToSection = (id) => {
+    setActiveSection(id)
+    const domId = id === 'home' ? 'hero' : id
+    const el = document.getElementById(domId)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
-    <div className="floating-navbar-container">
-      <nav className="floating-navbar">
-        {navItems.map(item => {
-          const isActive = activeSection === item.id
-          return (
-            <a
-              key={item.id}
-              href={item.href}
-              className={`floating-nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setActiveSection(item.id)}
+    <>
+      <div className={`floating-navbar-container ${!navVisible ? 'nav-hidden' : ''}`}>
+        <nav className="floating-navbar">
+          {navItems.map(item => {
+            const isActive = activeSection === item.id
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className={`floating-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => scrollToSection(item.id)}
+                aria-label={item.label}
+              >
+                <span className="floating-nav-icon">{item.icon}</span>
+                {isActive && <span className="floating-nav-label">{item.label}</span>}
+                {isActive && <span className="floating-nav-dot" />}
+
+                {/* Hover Tooltip Popup */}
+                <span className="nav-tooltip">{item.label}</span>
+              </button>
+            )
+          })}
+
+          {/* Toggle Zen Mode Button inside dock */}
+          {onToggleNav && (
+            <button
+              type="button"
+              className="floating-nav-toggle-btn"
+              onClick={onToggleNav}
+              aria-label="Hide Navbars"
             >
-              <span className="floating-nav-icon">{item.icon}</span>
-              {isActive && <span className="floating-nav-label">{item.label}</span>}
-              {isActive && <span className="floating-nav-dot" />}
-            </a>
-          )
-        })}
-      </nav>
-    </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+              <span className="nav-tooltip">Zen Mode</span>
+            </button>
+          )}
+        </nav>
+      </div>
+
+      {/* Floating Restore Nav Button when navbars are hidden */}
+      {!navVisible && onToggleNav && (
+        <button
+          type="button"
+          className="zen-restore-btn"
+          onClick={onToggleNav}
+          aria-label="Navigate"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <span className="zen-restore-text">Navigate</span>
+        </button>
+      )}
+    </>
   )
 }

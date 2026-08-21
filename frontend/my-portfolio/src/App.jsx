@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 // Public pages
 import Home from './pages/Home'
 import AchievementsPage from './pages/AchievementsPage'
+import NotFound from './pages/NotFound'
 
 // Admin pages
 import AdminLogin from './admin/AdminLogin'
@@ -75,13 +76,7 @@ export default function App() {
         </Route>
 
         {/* 404 */}
-        <Route path="*" element={
-          <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:16, background:'var(--bg-primary)' }}>
-            <div style={{ fontFamily:'var(--font-mono)', fontSize:'4rem', color:'var(--accent)' }}>404</div>
-            <div style={{ fontFamily:'var(--font-mono)', color:'var(--text-muted)' }}>Page not found</div>
-            <a href="/" style={{ color:'var(--accent-2)', fontFamily:'var(--font-mono)', fontSize:'0.85rem' }}>← go home</a>
-          </div>
-        } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
   )
