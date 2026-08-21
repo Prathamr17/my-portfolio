@@ -3126,15 +3126,42 @@ tr:hover td { background: rgba(99,102,241,0.03); }
   padding: 12px;
 }
 
-/* Media Queries for Wireframe Layouts */
+/* Media Queries for Wireframe Layouts & Mobile Responsiveness */
 @media (max-width: 900px) {
+  .about-partition-grid,
   .about-wireframe-grid {
     grid-template-columns: 1fr;
+    row-gap: 28px;
+    column-gap: 0;
+    justify-items: center;
     text-align: center;
   }
 
+  .about-col-left {
+    align-items: center;
+  }
+
+  .about-col-right,
   .about-right-col {
     align-items: center;
+    text-align: center;
+  }
+
+  .about-bio-text p {
+    text-align: center;
+  }
+
+  .about-meta-inline {
+    justify-content: center;
+  }
+
+  .about-skills-pills {
+    justify-content: center;
+  }
+
+  .compact-photo {
+    width: 180px;
+    height: 180px;
   }
 
   .skills-wireframe-layout {
@@ -3159,5 +3186,91 @@ tr:hover td { background: rgba(99,102,241,0.03); }
 
   .form-row-wireframe {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-navbar-container {
+    bottom: max(14px, env(safe-area-inset-bottom, 14px));
+    max-width: calc(100vw - 16px);
+    width: max-content;
+  }
+
+  .floating-navbar {
+    padding: 6px 10px;
+    gap: 4px;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .floating-navbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .floating-nav-item {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .floating-top-navbar-container {
+    top: 12px;
+    max-width: calc(100vw - 16px);
+  }
+
+  .floating-top-navbar-dock {
+    padding: 6px 12px;
+    gap: 10px;
+  }
+
+  .top-dock-logo-always {
+    font-size: 0.78rem;
+    padding: 2px 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .compact-photo {
+    width: 150px;
+    height: 150px;
+  }
+
+  .about-location-box {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+  }
+
+  .about-meta-tag {
+    font-size: 0.72rem;
+    padding: 4px 8px;
+  }
+
+  .skill-pill {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+
+  .floating-navbar-container {
+    bottom: max(10px, env(safe-area-inset-bottom, 10px));
+    max-width: calc(100vw - 12px);
+  }
+
+  .floating-navbar {
+    padding: 4px 6px;
+    gap: 2px;
+  }
+
+  .floating-nav-item {
+    padding: 7px 9px;
+    font-size: 0.68rem;
+    gap: 4px;
+  }
+
+  .floating-nav-label {
+    font-size: 0.65rem;
+    letter-spacing: 0;
   }
 }

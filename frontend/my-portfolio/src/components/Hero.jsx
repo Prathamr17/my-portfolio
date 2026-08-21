@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useFetch } from '../hooks/useFetch'
+import { getMediaUrl } from '../utils/media'
 
 const ROLES = ['Web Developer', 'AI-DS Engineer', 'ML Enthusiast', 'Full Stack Dev']
 
@@ -53,7 +54,7 @@ export default function Hero() {
 
           <div className="hero-btns">
             <a
-              href={about?.resume_url || '#'}
+              href={getMediaUrl(about?.resume_url) || '#'}
               target="_blank"
               rel="noreferrer"
               className="btn-primary"
