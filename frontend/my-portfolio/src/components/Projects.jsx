@@ -227,23 +227,25 @@ export default function Projects() {
                     </div>
 
                     <div className="detail-btn-row">
-                      <a
-                        href={selectedProject.live_url || '#'}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="btn-wireframe"
-                      >
-                        <i className="fa-solid fa-arrow-up-right-from-square" style={{ marginRight: 6 }} /> Demo
-                      </a>
-                      <a
-                        href={selectedProject.github_url || '#'}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="btn-wireframe"
-                      >
-                        <i className="fab fa-github" style={{ marginRight: 6 }} /> GitHub
-                      </a>
-                      <button className="btn-wireframe btn-wireframe-outline" onClick={() => setSelectedProject(null)}>
+                      {selectedProject.live_url && (
+                        <button
+                          type="button"
+                          onClick={() => window.open(selectedProject.live_url, '_blank', 'noopener,noreferrer')}
+                          className="btn-wireframe"
+                        >
+                          <i className="fa-solid fa-arrow-up-right-from-square" style={{ marginRight: 6 }} /> Demo
+                        </button>
+                      )}
+                      {selectedProject.github_url && (
+                        <button
+                          type="button"
+                          onClick={() => window.open(selectedProject.github_url, '_blank', 'noopener,noreferrer')}
+                          className="btn-wireframe"
+                        >
+                          <i className="fab fa-github" style={{ marginRight: 6 }} /> GitHub
+                        </button>
+                      )}
+                      <button type="button" className="btn-wireframe btn-wireframe-outline" onClick={() => setSelectedProject(null)}>
                         Close
                       </button>
                     </div>
@@ -275,13 +277,25 @@ export default function Projects() {
                         </div>
 
                         <div className="detail-btn-row">
-                          <a href={p.live_url || '#'} target="_blank" rel="noreferrer" className="btn-wireframe">
-                            <i className="fa-solid fa-arrow-up-right-from-square" style={{ marginRight: 6 }} /> Demo
-                          </a>
-                          <a href={p.github_url || '#'} target="_blank" rel="noreferrer" className="btn-wireframe">
-                            <i className="fab fa-github" style={{ marginRight: 6 }} /> GitHub
-                          </a>
-                          <button className="btn-wireframe btn-wireframe-outline" onClick={() => setSelectedProject(p)}>
+                          {p.live_url && (
+                            <button
+                              type="button"
+                              onClick={() => window.open(p.live_url, '_blank', 'noopener,noreferrer')}
+                              className="btn-wireframe"
+                            >
+                              <i className="fa-solid fa-arrow-up-right-from-square" style={{ marginRight: 6 }} /> Demo
+                            </button>
+                          )}
+                          {p.github_url && (
+                            <button
+                              type="button"
+                              onClick={() => window.open(p.github_url, '_blank', 'noopener,noreferrer')}
+                              className="btn-wireframe"
+                            >
+                              <i className="fab fa-github" style={{ marginRight: 6 }} /> GitHub
+                            </button>
+                          )}
+                          <button type="button" className="btn-wireframe btn-wireframe-outline" onClick={() => setSelectedProject(p)}>
                             Details
                           </button>
                         </div>
