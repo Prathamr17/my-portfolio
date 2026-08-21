@@ -1,4 +1,5 @@
 import { useFetch } from '../hooks/useFetch'
+import { getMediaUrl } from '../utils/media'
 
 function Stars({ count }) {
   return <span className="stars">{'★'.repeat(count)}{'☆'.repeat(Math.max(0, 5 - count))}</span>
@@ -33,7 +34,7 @@ export default function Platforms() {
         <div className="platforms-grid">
           {platforms.map(p => (
             <div key={p.id} className="platform-card">
-              {p.logo_url ? <img src={p.logo_url} alt={p.name} className="platform-logo" /> : <div style={{ fontSize: '1.8rem', marginBottom: 14 }}>💻</div>}
+              {p.logo_url ? <img src={getMediaUrl(p.logo_url)} alt={p.name} className="platform-logo" onError={(e) => { e.target.style.display = 'none' }} /> : <div style={{ fontSize: '1.8rem', marginBottom: 14 }}>💻</div>}
               <div className="platform-name">{p.name}</div>
               <div className="platform-desc">{p.description}</div>
 
@@ -51,7 +52,7 @@ export default function Platforms() {
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '1px' }}>Badges</div>
                   <div className="badge-row">
                     {p.badges.map((b, i) => (
-                      b.img ? <img key={i} src={b.img} alt={b.label} className="badge-img" title={b.label} /> : <span key={i} className="tag">{b.label}</span>
+                      b.img ? <img key={i} src={getMediaUrl(b.img)} alt={b.label} className="badge-img" title={b.label} onError={(e) => { e.target.style.display = 'none' }} /> : <span key={i} className="tag">{b.label}</span>
                     ))}
                   </div>
                 </div>

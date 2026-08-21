@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useFetch } from '../hooks/useFetch'
+import { getMediaUrl } from '../utils/media'
 
 const FILTERS = ['all', 'ai', 'language', 'internship', 'training', 'workshop', 'other']
 
@@ -43,7 +44,7 @@ export default function Certificates() {
           {filtered.map(cert => (
             <div key={cert.id} className="cert-card" onClick={() => setLightbox(cert)}>
               {cert.image_url ? (
-                <img src={cert.image_url} alt={cert.title} className="cert-img" />
+                <img src={getMediaUrl(cert.image_url)} alt={cert.title} className="cert-img" onError={(e) => { e.target.style.display = 'none' }} />
               ) : (
                 <div className="cert-img" style={{ background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', fontSize: '2.2rem' }}>
                   <i className="fa-solid fa-certificate" />
@@ -66,7 +67,7 @@ export default function Certificates() {
         <div className="lightbox" onClick={() => setLightbox(null)}>
           <button className="lightbox-close" onClick={() => setLightbox(null)}><i className="fa-solid fa-xmark" /></button>
           <div onClick={e => e.stopPropagation()}>
-            <img src={lightbox.image_url} alt={lightbox.title} className="lightbox-img" />
+            <img src={getMediaUrl(lightbox.image_url)} alt={lightbox.title} className="lightbox-img" />
             <div style={{ textAlign: 'center', marginTop: 16, fontFamily: 'var(--font-display)', fontSize: '1rem', color: 'var(--text-primary)' }}>
               {lightbox.title}
               {lightbox.issuer && <span style={{ color: 'var(--accent-2)', fontSize: '0.8rem', display: 'block', marginTop: 4 }}>{lightbox.issuer}</span>}
