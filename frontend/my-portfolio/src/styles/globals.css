@@ -3738,6 +3738,16 @@ html {
    SKILLS SECTION MOBILE RESPONSIVENESS (1 CARD PER ROW ON MOBILE/ANDROID)
    ════════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
+  .skills-wireframe-layout {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .skills-mockup-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
   .skills-grid {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
