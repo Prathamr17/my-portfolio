@@ -340,188 +340,176 @@ input, textarea, select { font-family: inherit; }
   color: #34d399;
 }
 
-/* Terminal Clickable Hyperlinks & Rich Blocks */
-.terminal-hyperlink {
-  color: #22d3ee;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  font-weight: 600;
-  transition: var(--transition);
-  cursor: pointer;
-}
-.terminal-hyperlink:hover {
-  color: #a855f7;
-  text-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
-}
+/* ─────────────────────────────────────────────────────────────────────────────
+   7 TERMINAL THEMES (tokyo-night, matrix, cyberpunk, dracula, monokai, nord, amber)
+   ───────────────────────────────────────────────────────────────────────────── */
 
-.terminal-response-box {
-  margin-top: 8px;
+/* 1. Tokyo Night (Default) */
+.term-theme-tokyo-night .terminal-fullscreen-container,
+.term-theme-tokyo-night .terminal-body { background: #1a1b26 !important; color: #c0caf5 !important; }
+.term-theme-tokyo-night .terminal-prompt { color: #7aa2f7 !important; }
+.term-theme-tokyo-night .terminal-line-user { color: #7dcfff !important; font-weight: 700; }
+.term-theme-tokyo-night .terminal-line-banner pre { color: #bb9af7 !important; }
+.term-theme-tokyo-night .terminal-line-system { color: #565f89 !important; }
+.term-theme-tokyo-night .term-title { color: #7dcfff !important; }
+.term-theme-tokyo-night .term-subtitle { color: #bb9af7 !important; }
+.term-theme-tokyo-night .term-lbl { color: #7aa2f7 !important; }
+.term-theme-tokyo-night .term-val { color: #c0caf5 !important; }
+.term-theme-tokyo-night .term-bar { color: #9ece6a !important; }
+.term-theme-tokyo-night .terminal-link { color: #7dcfff !important; text-decoration: underline; }
+.term-theme-tokyo-night .terminal-link:hover { color: #bb9af7 !important; }
+
+/* 2. Hacker Matrix Green */
+.term-theme-matrix .terminal-fullscreen-container,
+.term-theme-matrix .terminal-body { background: #050d08 !important; color: #00ff66 !important; }
+.term-theme-matrix .terminal-prompt { color: #00ff66 !important; font-weight: 800; }
+.term-theme-matrix .terminal-line-user { color: #33ff88 !important; font-weight: 700; }
+.term-theme-matrix .terminal-line-banner pre { color: #00ff66 !important; }
+.term-theme-matrix .terminal-line-system { color: #008833 !important; }
+.term-theme-matrix .term-title { color: #00ffcc !important; }
+.term-theme-matrix .term-subtitle { color: #33ff88 !important; }
+.term-theme-matrix .term-lbl { color: #00ff66 !important; }
+.term-theme-matrix .term-val { color: #b3ffcc !important; }
+.term-theme-matrix .term-bar { color: #00ff66 !important; }
+.term-theme-matrix .terminal-link { color: #00ffcc !important; text-decoration: underline; }
+.term-theme-matrix .terminal-link:hover { color: #ffffff !important; }
+
+/* 3. Cyberpunk Pink & Cyan */
+.term-theme-cyberpunk .terminal-fullscreen-container,
+.term-theme-cyberpunk .terminal-body { background: #0b0813 !important; color: #f8f8f2 !important; }
+.term-theme-cyberpunk .terminal-prompt { color: #ff007f !important; font-weight: 800; }
+.term-theme-cyberpunk .terminal-line-user { color: #00f0ff !important; font-weight: 700; }
+.term-theme-cyberpunk .terminal-line-banner pre { color: #ff007f !important; }
+.term-theme-cyberpunk .terminal-line-system { color: #6272a4 !important; }
+.term-theme-cyberpunk .term-title { color: #ffe600 !important; }
+.term-theme-cyberpunk .term-subtitle { color: #ff007f !important; }
+.term-theme-cyberpunk .term-lbl { color: #00f0ff !important; }
+.term-theme-cyberpunk .term-val { color: #f8f8f2 !important; }
+.term-theme-cyberpunk .term-bar { color: #ff007f !important; }
+.term-theme-cyberpunk .terminal-link { color: #ffe600 !important; text-decoration: underline; }
+.term-theme-cyberpunk .terminal-link:hover { color: #00f0ff !important; }
+
+/* 4. Dracula Dark */
+.term-theme-dracula .terminal-fullscreen-container,
+.term-theme-dracula .terminal-body { background: #282a36 !important; color: #f8f8f2 !important; }
+.term-theme-dracula .terminal-prompt { color: #ff79c6 !important; }
+.term-theme-dracula .terminal-line-user { color: #8be9fd !important; font-weight: 700; }
+.term-theme-dracula .terminal-line-banner pre { color: #bd93f9 !important; }
+.term-theme-dracula .terminal-line-system { color: #6272a4 !important; }
+.term-theme-dracula .term-title { color: #8be9fd !important; }
+.term-theme-dracula .term-subtitle { color: #ff79c6 !important; }
+.term-theme-dracula .term-lbl { color: #bd93f9 !important; }
+.term-theme-dracula .term-val { color: #f8f8f2 !important; }
+.term-theme-dracula .term-bar { color: #50fa7b !important; }
+.term-theme-dracula .terminal-link { color: #8be9fd !important; text-decoration: underline; }
+.term-theme-dracula .terminal-link:hover { color: #ff79c6 !important; }
+
+/* 5. Monokai Pro */
+.term-theme-monokai .terminal-fullscreen-container,
+.term-theme-monokai .terminal-body { background: #272822 !important; color: #f8f8f2 !important; }
+.term-theme-monokai .terminal-prompt { color: #a6e22e !important; }
+.term-theme-monokai .terminal-line-user { color: #66d9ef !important; font-weight: 700; }
+.term-theme-monokai .terminal-line-banner pre { color: #fd971f !important; }
+.term-theme-monokai .terminal-line-system { color: #75715e !important; }
+.term-theme-monokai .term-title { color: #66d9ef !important; }
+.term-theme-monokai .term-subtitle { color: #ae81ff !important; }
+.term-theme-monokai .term-lbl { color: #a6e22e !important; }
+.term-theme-monokai .term-val { color: #f8f8f2 !important; }
+.term-theme-monokai .term-bar { color: #a6e22e !important; }
+.term-theme-monokai .terminal-link { color: #66d9ef !important; text-decoration: underline; }
+.term-theme-monokai .terminal-link:hover { color: #e6db74 !important; }
+
+/* 6. Nord Arctic Frost */
+.term-theme-nord .terminal-fullscreen-container,
+.term-theme-nord .terminal-body { background: #2e3440 !important; color: #eceff4 !important; }
+.term-theme-nord .terminal-prompt { color: #88c0d0 !important; }
+.term-theme-nord .terminal-line-user { color: #81a1c1 !important; font-weight: 700; }
+.term-theme-nord .terminal-line-banner pre { color: #b48ead !important; }
+.term-theme-nord .terminal-line-system { color: #4c566a !important; }
+.term-theme-nord .term-title { color: #88c0d0 !important; }
+.term-theme-nord .term-subtitle { color: #ebcb8b !important; }
+.term-theme-nord .term-lbl { color: #81a1c1 !important; }
+.term-theme-nord .term-val { color: #eceff4 !important; }
+.term-theme-nord .term-bar { color: #a3be8c !important; }
+.term-theme-nord .terminal-link { color: #88c0d0 !important; text-decoration: underline; }
+.term-theme-nord .terminal-link:hover { color: #ebcb8b !important; }
+
+/* 7. Retro 1980s Amber CRT */
+.term-theme-amber .terminal-fullscreen-container,
+.term-theme-amber .terminal-body { background: #0f0a00 !important; color: #ffb000 !important; }
+.term-theme-amber .terminal-prompt { color: #ffb000 !important; font-weight: 800; }
+.term-theme-amber .terminal-line-user { color: #ffd000 !important; font-weight: 700; }
+.term-theme-amber .terminal-line-banner pre { color: #ffb000 !important; }
+.term-theme-amber .terminal-line-system { color: #885500 !important; }
+.term-theme-amber .term-title { color: #ffd000 !important; }
+.term-theme-amber .term-subtitle { color: #ff8800 !important; }
+.term-theme-amber .term-lbl { color: #ffb000 !important; }
+.term-theme-amber .term-val { color: #ffe088 !important; }
+.term-theme-amber .term-bar { color: #ffb000 !important; }
+.term-theme-amber .terminal-link { color: #ffd000 !important; text-decoration: underline; }
+.term-theme-amber .terminal-link:hover { color: #ffffff !important; }
+
+/* General ASCII Terminal Layout Classes */
+.term-block {
+  margin-top: 6px;
   margin-bottom: 8px;
-  padding: 14px 18px;
-  background: rgba(13, 17, 26, 0.7);
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  border-radius: 8px;
-  color: #e2e8f0;
 }
-
-.term-heading {
+.term-title {
   font-weight: 700;
-  color: #38bdf8;
   font-size: 0.95rem;
   letter-spacing: 0.05em;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
-
-.term-subheading {
+.term-subtitle {
   font-weight: 700;
-  color: #a855f7;
-  margin-top: 10px;
-  margin-bottom: 6px;
+  margin-top: 8px;
+  margin-bottom: 4px;
 }
-
-.term-text {
-  color: #94a3b8;
-  margin-bottom: 12px;
+.term-divider {
+  opacity: 0.4;
+  margin: 4px 0;
+}
+.term-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   line-height: 1.6;
 }
-
-.term-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 12px;
-  margin-top: 10px;
+.term-row-indented {
+  padding-left: 12px;
+  margin-top: 4px;
+  margin-bottom: 6px;
 }
-
-.term-label {
-  color: #64748b;
+.term-lbl {
   font-weight: 600;
 }
-
-.term-item-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  padding: 12px 14px;
-  border-radius: 6px;
-  margin-top: 10px;
+.term-val {
+  opacity: 0.9;
 }
-
-.term-item-title {
-  color: #f1f5f9;
-  font-weight: 700;
-  font-size: 0.92rem;
-}
-
-.term-accent-color {
-  color: #22d3ee;
-}
-
-.term-item-desc {
-  color: #94a3b8;
-  font-size: 0.85rem;
-  margin: 6px 0;
-  line-height: 1.5;
-}
-
-.term-tags {
-  margin-top: 6px;
-  font-size: 0.8rem;
-}
-
-.term-tag-pill {
-  color: #a855f7;
-  margin-right: 6px;
-  font-weight: 600;
-}
-
-.term-links-row {
-  display: flex;
-  gap: 16px;
-  margin-top: 8px;
-  font-size: 0.85rem;
-}
-
-.term-badge {
-  background: rgba(34, 211, 238, 0.15);
-  color: #22d3ee;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  margin-left: 6px;
-}
-
-.term-skill-cat {
-  margin-top: 8px;
-}
-
-.term-skill-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 8px;
-  margin-top: 6px;
-}
-
-.term-skill-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
-}
-
-.term-skill-name {
-  width: 110px;
-  color: #e2e8f0;
-  font-weight: 600;
-}
-
-.term-skill-bar {
-  color: #22c55e;
-  font-weight: 700;
+.term-bar {
   letter-spacing: 1px;
 }
-
-.term-skill-perc {
-  color: #64748b;
-  font-size: 0.78rem;
+.term-text {
+  margin-bottom: 8px;
+  line-height: 1.6;
+  opacity: 0.9;
 }
-
-.term-stat-card {
-  background: rgba(59, 130, 246, 0.08);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  padding: 12px;
-  border-radius: 6px;
-  text-align: center;
+.term-box-card {
+  margin-top: 6px;
+  margin-bottom: 8px;
 }
-
-.term-stat-val {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #22d3ee;
+.term-box-header {
+  font-weight: 700;
 }
-
-.term-stat-lbl {
-  font-size: 0.78rem;
-  color: #cbd5e1;
+.term-box-line {
+  line-height: 1.5;
+}
+.term-box-footer {
+  opacity: 0.6;
+}
+.terminal-link {
   font-weight: 600;
-  margin-top: 2px;
-}
-
-.term-stat-sub {
-  font-size: 0.7rem;
-  color: #64748b;
-  margin-top: 2px;
-}
-
-.term-date {
-  color: #64748b;
-  font-size: 0.78rem;
-  margin-left: 6px;
-}
-
-.term-sub-info {
-  color: #64748b;
-  font-size: 0.8rem;
-  margin-top: 2px;
+  cursor: pointer;
 }
 
 .terminal-input-form {
