@@ -44,6 +44,19 @@ export function useFetch(endpoint, deps = []) {
       const result = r.data.data ?? r.data
 
       cacheMap.set(endpoint, result)
+
+      // Automatically populate sub-caches when unified /public/all is fetched
+      if (endpoint === '/public/all' && result && typeof result === 'object') {
+        if (result.about) cacheMap.set('/public/about', result.about)
+        if (result.skills) cacheMap.set('/public/skills', result.skills)
+        if (result.projects) cacheMap.set('/public/projects', result.projects)
+        if (result.certificates) cacheMap.set('/public/certificates', result.certificates)
+        if (result.platforms) cacheMap.set('/public/platforms', result.platforms)
+        if (result.internships) cacheMap.set('/public/internships', result.internships)
+        if (result.achievements) cacheMap.set('/public/achievements', result.achievements)
+        if (result.stats) cacheMap.set('/public/stats', result.stats)
+      }
+
       setData(result)
     } catch (e) {
       const msg = e.response?.data?.message || e.message || 'Failed to load data'

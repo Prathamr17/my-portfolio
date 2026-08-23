@@ -9,8 +9,12 @@ import Skills from '../components/Skills'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useFetch } from '../hooks/useFetch'
 
 export default function Home() {
+  // Prefetch all public data in 1 single unified HTTP request
+  useFetch('/public/all')
+
   const [navVisible, setNavVisible] = useState(() => {
     return localStorage.getItem('nav_visible') !== 'false'
   })
