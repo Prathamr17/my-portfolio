@@ -22,7 +22,7 @@ export function useFetch(endpoint, deps = []) {
   const fetchData = useCallback(async (bypassCache = false) => {
     if (!endpoint) { setLoading(false); return }
 
-    // If cached and not bypassing, return cached value instantly (0ms delay)
+    // 1. If cached and not bypassing, return cached value instantly (0ms delay)
     if (!bypassCache && cacheMap.has(endpoint)) {
       setData(cacheMap.get(endpoint))
       setLoading(false)
@@ -33,7 +33,25 @@ export function useFetch(endpoint, deps = []) {
     setError(null)
 
     try {
-      // Deduplicate simultaneous requests for the exact same endpoint
+      let rData = null
+
+      // 2. If endpoint is a public sub-route and /public/all is currently in-flight or cached
+      const isPublicSubRoute = endpoint.startsWith('/public/') && endpoint !== '/public/all'
+      const allInflight = inflightMap.get('/public/all')
+
+      if (!bypassCache && isPublicSubRoute && (cacheMap.has('/public/all') || allInflight)) {
+        if (allInflight) {
+          try { await allInflight } catch { /* ignore /all error to fallback */ }
+        }
+        if (cacheMap.has(endpoint)) {
+          rData = cacheMap.get(endpoint)
+          setData(rData)
+          setLoading(false)
+          return
+        }
+      }
+
+      // 3. Otherwise fetch endpoint directly
       let promise = inflightMap.get(endpoint)
       if (!promise || bypassCache) {
         promise = api.get(endpoint)
@@ -41,23 +59,23 @@ export function useFetch(endpoint, deps = []) {
       }
 
       const r = await promise
-      const result = r.data.data ?? r.data
+      rData = r.data.data ?? r.data
 
-      cacheMap.set(endpoint, result)
+      cacheMap.set(endpoint, rData)
 
       // Automatically populate sub-caches when unified /public/all is fetched
-      if (endpoint === '/public/all' && result && typeof result === 'object') {
-        if (result.about) cacheMap.set('/public/about', result.about)
-        if (result.skills) cacheMap.set('/public/skills', result.skills)
-        if (result.projects) cacheMap.set('/public/projects', result.projects)
-        if (result.certificates) cacheMap.set('/public/certificates', result.certificates)
-        if (result.platforms) cacheMap.set('/public/platforms', result.platforms)
-        if (result.internships) cacheMap.set('/public/internships', result.internships)
-        if (result.achievements) cacheMap.set('/public/achievements', result.achievements)
-        if (result.stats) cacheMap.set('/public/stats', result.stats)
+      if (endpoint === '/public/all' && rData && typeof rData === 'object') {
+        if (rData.about) cacheMap.set('/public/about', rData.about)
+        if (rData.skills) cacheMap.set('/public/skills', rData.skills)
+        if (rData.projects) cacheMap.set('/public/projects', rData.projects)
+        if (rData.certificates) cacheMap.set('/public/certificates', rData.certificates)
+        if (rData.platforms) cacheMap.set('/public/platforms', rData.platforms)
+        if (rData.internships) cacheMap.set('/public/internships', rData.internships)
+        if (rData.achievements) cacheMap.set('/public/achievements', rData.achievements)
+        if (rData.stats) cacheMap.set('/public/stats', rData.stats)
       }
 
-      setData(result)
+      setData(rData)
     } catch (e) {
       const msg = e.response?.data?.message || e.message || 'Failed to load data'
       setError(msg)
