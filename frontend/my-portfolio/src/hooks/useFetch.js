@@ -5,7 +5,38 @@ import api from '../api/axios'
 const cacheMap = new Map()
 const inflightMap = new Map()
 
+let publicAllPromise = null
+
+export function prefetchPublicData() {
+  if (!publicAllPromise) {
+    publicAllPromise = api.get('/public/all')
+      .then(r => {
+        const result = r.data.data ?? r.data
+        cacheMap.set('/public/all', result)
+        if (result && typeof result === 'object') {
+          if (result.about) cacheMap.set('/public/about', result.about)
+          if (result.skills) cacheMap.set('/public/skills', result.skills)
+          if (result.projects) cacheMap.set('/public/projects', result.projects)
+          if (result.certificates) cacheMap.set('/public/certificates', result.certificates)
+          if (result.platforms) cacheMap.set('/public/platforms', result.platforms)
+          if (result.internships) cacheMap.set('/public/internships', result.internships)
+          if (result.achievements) cacheMap.set('/public/achievements', result.achievements)
+          if (result.stats) cacheMap.set('/public/stats', result.stats)
+        }
+        return result
+      })
+      .catch(() => null)
+  }
+  return publicAllPromise
+}
+
+// Immediately trigger prefetch as soon as the JS module is loaded!
+if (typeof window !== 'undefined') {
+  prefetchPublicData()
+}
+
 export function clearFetchCache(endpoint) {
+  publicAllPromise = null
   if (endpoint) {
     cacheMap.delete(endpoint)
   } else {
@@ -22,7 +53,7 @@ export function useFetch(endpoint, deps = []) {
   const fetchData = useCallback(async (bypassCache = false) => {
     if (!endpoint) { setLoading(false); return }
 
-    // 1. If cached and not bypassing, return cached value instantly (0ms delay)
+    // 1. Return cached value immediately if available
     if (!bypassCache && cacheMap.has(endpoint)) {
       setData(cacheMap.get(endpoint))
       setLoading(false)
@@ -34,15 +65,11 @@ export function useFetch(endpoint, deps = []) {
 
     try {
       let rData = null
-
-      // 2. If endpoint is a public sub-route and /public/all is currently in-flight or cached
       const isPublicSubRoute = endpoint.startsWith('/public/') && endpoint !== '/public/all'
-      const allInflight = inflightMap.get('/public/all')
 
-      if (!bypassCache && isPublicSubRoute && (cacheMap.has('/public/all') || allInflight)) {
-        if (allInflight) {
-          try { await allInflight } catch { /* ignore /all error to fallback */ }
-        }
+      // 2. For public sub-routes, await the top-level prefetch promise first
+      if (!bypassCache && isPublicSubRoute) {
+        await prefetchPublicData()
         if (cacheMap.has(endpoint)) {
           rData = cacheMap.get(endpoint)
           setData(rData)
@@ -51,7 +78,7 @@ export function useFetch(endpoint, deps = []) {
         }
       }
 
-      // 3. Otherwise fetch endpoint directly
+      // 3. Fallback: fetch endpoint directly if not populated by /public/all
       let promise = inflightMap.get(endpoint)
       if (!promise || bypassCache) {
         promise = api.get(endpoint)
@@ -63,7 +90,6 @@ export function useFetch(endpoint, deps = []) {
 
       cacheMap.set(endpoint, rData)
 
-      // Automatically populate sub-caches when unified /public/all is fetched
       if (endpoint === '/public/all' && rData && typeof rData === 'object') {
         if (rData.about) cacheMap.set('/public/about', rData.about)
         if (rData.skills) cacheMap.set('/public/skills', rData.skills)
