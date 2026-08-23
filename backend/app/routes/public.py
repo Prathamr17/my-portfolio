@@ -18,6 +18,15 @@ def _err(msg: str, code: int = 404):
     return jsonify({"success": False, "message": msg}), code
 
 
+# Server-side RAM cache for /api/public/all
+_public_all_cache = None
+
+
+def invalidate_public_cache():
+    global _public_all_cache
+    _public_all_cache = None
+
+
 # ── GET /api/health (For UptimeRobot Keep-Alive Ping) ─────────────────────────
 @public_bp.get("/health")
 def health_check():
@@ -27,6 +36,10 @@ def health_check():
 # ── GET /api/public/all (Unified Single Request for Portfolio Data) ───────────
 @public_bp.get("/all")
 def get_all_public_data():
+    global _public_all_cache
+    if _public_all_cache is not None:
+        return jsonify(_public_all_cache), 200
+
     about = About.query.first()
     categories = SkillCategory.query.order_by(SkillCategory.order_index).all()
     projects = Project.query.order_by(Project.is_featured.desc(), Project.order_index).all()
@@ -35,21 +48,27 @@ def get_all_public_data():
     internships = Internship.query.order_by(Internship.is_current.desc(), Internship.start_date.desc()).all()
     achievements = Achievement.query.order_by(Achievement.order_index).all()
 
-    return _ok({
-        "about": about.to_dict() if about else None,
-        "skills": [c.to_dict() for c in categories],
-        "projects": [p.to_dict() for p in projects],
-        "certificates": [c.to_dict() for c in certs],
-        "platforms": [p.to_dict() for p in platforms],
-        "internships": [i.to_dict() for i in internships],
-        "achievements": [a.to_dict() for a in achievements],
-        "stats": {
-            "projects": len(projects),
-            "certificates": len(certs),
-            "platforms": len(platforms),
-            "internships": len(internships),
+    response_data = {
+        "success": True,
+        "data": {
+            "about": about.to_dict() if about else None,
+            "skills": [c.to_dict() for c in categories],
+            "projects": [p.to_dict() for p in projects],
+            "certificates": [c.to_dict() for c in certs],
+            "platforms": [p.to_dict() for p in platforms],
+            "internships": [i.to_dict() for i in internships],
+            "achievements": [a.to_dict() for a in achievements],
+            "stats": {
+                "projects": len(projects),
+                "certificates": len(certs),
+                "platforms": len(platforms),
+                "internships": len(internships),
+            }
         }
-    })
+    }
+
+    _public_all_cache = response_data
+    return jsonify(response_data), 200
 
 
 # ── GET /api/public/about ─────────────────────────────────────────────────────

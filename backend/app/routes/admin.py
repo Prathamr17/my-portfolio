@@ -17,6 +17,9 @@ admin_bp = Blueprint("admin", __name__)
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def _ok(data=None, msg: str = "OK", code: int = 200):
+    from app.routes.public import invalidate_public_cache
+    if request.method in ["POST", "PUT", "DELETE"]:
+        invalidate_public_cache()
     r = {"success": True, "message": msg}
     if data is not None:
         r["data"] = data
