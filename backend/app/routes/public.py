@@ -18,6 +18,40 @@ def _err(msg: str, code: int = 404):
     return jsonify({"success": False, "message": msg}), code
 
 
+# ── GET /api/health (For UptimeRobot Keep-Alive Ping) ─────────────────────────
+@public_bp.get("/health")
+def health_check():
+    return _ok({"status": "ok", "message": "Backend is awake and active."})
+
+
+# ── GET /api/public/all (Unified Single Request for Portfolio Data) ───────────
+@public_bp.get("/all")
+def get_all_public_data():
+    about = About.query.first()
+    categories = SkillCategory.query.order_by(SkillCategory.order_index).all()
+    projects = Project.query.order_by(Project.is_featured.desc(), Project.order_index).all()
+    certs = Certificate.query.order_by(Certificate.issue_date.desc()).all()
+    platforms = Platform.query.order_by(Platform.order_index).all()
+    internships = Internship.query.order_by(Internship.is_current.desc(), Internship.start_date.desc()).all()
+    achievements = Achievement.query.order_by(Achievement.order_index).all()
+
+    return _ok({
+        "about": about.to_dict() if about else None,
+        "skills": [c.to_dict() for c in categories],
+        "projects": [p.to_dict() for p in projects],
+        "certificates": [c.to_dict() for c in certs],
+        "platforms": [p.to_dict() for p in platforms],
+        "internships": [i.to_dict() for i in internships],
+        "achievements": [a.to_dict() for a in achievements],
+        "stats": {
+            "projects": len(projects),
+            "certificates": len(certs),
+            "platforms": len(platforms),
+            "internships": len(internships),
+        }
+    })
+
+
 # ── GET /api/public/about ─────────────────────────────────────────────────────
 @public_bp.get("/about")
 def get_about():

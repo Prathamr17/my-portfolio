@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import api from '../api/axios'
 import { Plus, X } from 'lucide-react'
 import ImageUploadInput from './ImageUploadInput'
+import { clearFetchCache } from '../hooks/useFetch'
 
 /**
  * Generic CRUD page.
@@ -67,6 +68,7 @@ export default function CrudPage({
         toast.success('Updated!')
       }
       setModal(null)
+      clearFetchCache()
       refetch()
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to save.')
@@ -80,6 +82,7 @@ export default function CrudPage({
     try {
       await api.delete(`${endpoint}/${id}`)
       toast.success('Deleted.')
+      clearFetchCache()
       refetch()
     } catch {
       toast.error('Failed to delete.')
