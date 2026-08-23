@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast'
 import { Component } from 'react'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import InitialLoader from './components/InitialLoader'
 
 // Public pages
 import Home from './pages/Home'
@@ -37,6 +38,7 @@ class ErrorBoundary extends Component {
 export default function App() {
   return (
     <AuthProvider>
+      <InitialLoader />
       <Toaster
         position="top-right"
         toastOptions={{

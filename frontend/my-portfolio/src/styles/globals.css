@@ -3864,3 +3864,97 @@ html {
     gap: 16px !important;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   MINIMAL INITIAL APP LOADER (2 SECONDS)
+   ════════════════════════════════════════════════════════════════════════════ */
+.initial-loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: var(--bg-primary);
+  background-image: radial-gradient(circle at 50% 50%, rgba(124, 92, 255, 0.12) 0%, rgba(8, 9, 13, 0.98) 75%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+  pointer-events: auto;
+}
+
+.initial-loader-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+.initial-loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  user-select: none;
+}
+
+.initial-loader-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.initial-loader-brand .loader-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+}
+
+.initial-loader-bar-container {
+  width: 160px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.initial-loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 10px var(--accent-glow);
+  animation: initialLoadProgress 2.0s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.initial-loader-subtext {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  animation: pulseSubtext 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes initialLoadProgress {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 65%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes pulseSubtext {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
