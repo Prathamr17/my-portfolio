@@ -130,10 +130,9 @@ export default function TerminalModal({ isOpen, onClose }) {
     return found
   }
 
-  // Handle Command Submission
-  const handleCommandSubmit = (e) => {
-    e.preventDefault()
-    const cmd = input.trim()
+  // Execute Command Logic
+  const executeCommand = (cmdToRun) => {
+    const cmd = (cmdToRun || '').trim()
     if (!cmd) return
 
     setCmdHistory(prev => [...prev, cmd])
@@ -143,8 +142,6 @@ export default function TerminalModal({ isOpen, onClose }) {
     const parts = lower.split(' ').filter(Boolean)
     const primaryCmd = parts[0]
     const arg = parts[1]
-
-    const newLogs = [...logs, { type: 'user', content: `pratham@portfolio:~$ ${cmd}` }]
 
     if (primaryCmd === 'clear') {
       setLogs([])
@@ -478,14 +475,22 @@ AVAILABLE CLI COMMANDS:
       }
     }
 
-    if (responseJsx) {
-      newLogs.push({ type: 'response', jsx: responseJsx })
-    } else {
-      newLogs.push({ type: 'response', content: responseText })
-    }
-
-    setLogs(newLogs)
+    setLogs(prev => {
+      const updated = [...prev, { type: 'user', content: `pratham@portfolio:~$ ${cmd}` }]
+      if (responseJsx) {
+        updated.push({ type: 'response', jsx: responseJsx })
+      } else {
+        updated.push({ type: 'response', content: responseText })
+      }
+      return updated
+    })
     setInput('')
+  }
+
+  // Handle Command Submission Form
+  const handleCommandSubmit = (e) => {
+    e.preventDefault()
+    executeCommand(input)
   }
 
   // Arrow Key Command History Navigation
@@ -533,6 +538,24 @@ AVAILABLE CLI COMMANDS:
           {logs.map((log, index) => (
             <TerminalLine key={index} log={log} />
           ))}
+
+          {/* Quick Command Touch Bar for Mobile/Android & Keyboard Shortcut Users */}
+          <div className="terminal-quick-bar">
+            <span className="term-quick-lbl">Quick:</span>
+            {['help', 'whoami', 'skills', 'projects', 'experience', 'certs', 'platforms', 'contact', 'themes'].map(c => (
+              <button
+                key={c}
+                type="button"
+                className="term-quick-btn"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  executeCommand(c)
+                }}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
 
           {/* Prompt Input Form */}
           <form onSubmit={handleCommandSubmit} className="terminal-input-form">
